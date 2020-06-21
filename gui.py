@@ -66,7 +66,6 @@ class MainWindow(Widg):
         self.MainVlayout.addLayout(SubMainHlayout(self))
         self.MainVlayout.addLayout(Play(self))
         self.MainVlayout.setAlignment(Qt.AlignCenter)
-
         #Submain component
         self.SubMainHlayout = HoriArr()
         #SubMainHlayout setting
