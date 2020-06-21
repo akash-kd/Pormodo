@@ -51,10 +51,9 @@ class TitleBar(Widg):
         super(TitleBar,self).__init__()
         #component
         self.label = Label("PORMODO")
-        self.layout = HoriArr()
         self.closeButton = Pbutton()
+        self.layout = HoriArr()
     
-
         #layout setting
         self.layout.addWidget(self.label)
         self.layout.addWidget(self.closeButton)
@@ -102,14 +101,7 @@ class TitleBar(Widg):
 class Main(Widg):
     def __init__(self,parent):
         super(Main,self).__init__()
-        #components
-        self.Vlayout = VertArr()
-        #vlayout setting
-        self.Vlayout.addWidget(SubMain(self))
-        self.Vlayout.addWidget(Play(self))
-        self.Vlayout.setAlignment(Qt.AlignCenter)
-        #self setting
-        self.setLayout(self.Vlayout)
+
     
 
 class SubMain(Widg):
