@@ -127,9 +127,7 @@ class WorkSlider(Widg):
         self.layout = VertArr()
         self.slider = Slider()
         self.label = Label('25')
-        #label Setting
-        self.label.setFont(SliderFont)
-        self.label.setAlignment(Qt.AlignCenter)
+
         
         #slider setting
         self.slider.setRange(0,60)

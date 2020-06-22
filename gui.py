@@ -63,16 +63,28 @@ class MainWindow(Widg):
         #Main components
         self.MainVlayout = VertArr()
         #MainVlayout setting
-        self.MainVlayout.addLayout(SubMainHlayout(self))
-        self.MainVlayout.addLayout(Play(self))
+        self.SubMainHlayout = HoriArr()
+        self.WorkSliderlayout = VertArr()
+        self.SubMainHlayout.addLayout(self.WorkSliderlayout)
+        self.MainVlayout.addLayout(self.SubMainHlayout)
+        # self.MainVlayout.addLayout(Play(self))
         self.MainVlayout.setAlignment(Qt.AlignCenter)
         #Submain component
-        self.SubMainHlayout = HoriArr()
+        
         #SubMainHlayout setting
-        self.SubMainHlayout.addWidget(WorkSlider(self))
-        self.SubMainHlayout.addWidget(BreakSlider(self))
+        
+        # self.SubMainHlayout.addWidget(BreakSlider(self))
         self.SubMainHlayout.setContentsMargins(0,0,0,0)
         self.SubMainHlayout.setAlignment(Qt.AlignCenter)
+
+        #work components
+        
+        self.WorkSliderslider = Slider()
+        self.WorkSliderlabel = Label('25')
+
+        #label Setting
+        self.WorkSliderlabel.setFont(SliderFont)
+        self.WorkSliderlabel.setAlignment(Qt.AlignCenter)
     
         
 
