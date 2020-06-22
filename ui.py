@@ -48,7 +48,7 @@ class MainWindow(Widg):
 
 class TitleBar(Widg):
     def __init__(self,parent):
-        super(TitleBar,self).__init__()
+        super(TitleBar,self).__init__(parent)
         #component
         self.label = Label("PORMODO")
         self.closeButton = Pbutton()
@@ -100,15 +100,25 @@ class TitleBar(Widg):
 
 class Main(Widg):
     def __init__(self,parent):
-        super(Main,self).__init__()
+        super(Main,self).__init__(parent)
+        #components
+        self.Vlayout = VertArr()
+        #vlayout setting
+        self.Vlayout.addWidget(SubMain(self))
+        self.Vlayout.addWidget(Play(self))
+        self.Vlayout.setAlignment(Qt.AlignCenter)
+        #self setting
+        self.setLayout(self.Vlayout)
 
     
 
 class SubMain(Widg):
+    testing = "something"
     def __init__(self,parent):
-        super(SubMain,self).__init__()
+        super(SubMain,self).__init__(parent)
         #component
         self.Hlayout = HoriArr()
+        self.label = Label("hello")
         #hlayout setting
         self.Hlayout.addWidget(WorkSlider(self))
         self.Hlayout.addWidget(BreakSlider(self))
@@ -116,13 +126,19 @@ class SubMain(Widg):
         self.Hlayout.setAlignment(Qt.AlignCenter)
         # self setting
         self.setLayout(self.Hlayout)
+        print(self.label.text())
+
+    def setWorkMins(self,val):
+        self.workMins = val
+        print(self.workMins)
+        
         
 
 
 class WorkSlider(Widg):
     mins = 25
     def __init__(self,parent):
-        super(WorkSlider,self).__init__()
+        super(WorkSlider,self).__init__(parent)
         #components
         self.layout = VertArr()
         self.slider = Slider()
@@ -153,6 +169,8 @@ class WorkSlider(Widg):
         Workmins = self.slider.value()
         self.label.setText(str(self.slider.value()))
         print(Workmins)
+        self.parent().setWorkMins(self.slider.value())
+        
 
 
 
@@ -160,7 +178,7 @@ class WorkSlider(Widg):
 class BreakSlider(Widg):
     mins = 5
     def __init__(self,parent):
-        super(BreakSlider,self).__init__()
+        super(BreakSlider,self).__init__(parent)
         #components
         self.layout = VertArr()
         self.slider = Slider()
@@ -201,7 +219,7 @@ class BreakSlider(Widg):
 
 class Play(Widg):
     def __init__(self,parent):
-        super(Play,self).__init__()
+        super(Play,self).__init__(parent)
         #component
         self.layout = HoriArr()
         self.label = Label('heh')

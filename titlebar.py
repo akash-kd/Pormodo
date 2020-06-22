@@ -15,3 +15,23 @@ from PyQt5.QtWidgets import QWidget as Widg
 Primaryfont = QtGui.QFont('Jetbrains Mono',12,QtGui.QFont.Bold)
 Secondaryfont = QtGui.QFont('Jetbrains Mono',10,QtGui.QFont.Medium)
 SliderFont = QtGui.QFont('Jetbrains Mono',90,QtGui.QFont.Bold)
+
+class TitleBar(Widg):
+    def __init__(self,parent):
+        super(TitleBar,self).__init__()
+        #components:
+        self.layout = HoriArr()
+        self.label = Label("PORMODO")
+        self.closeButton = Pbutton()
+
+        #layout setting:
+        self.layout.addWidget(self.label)
+        self.layout.addWidget(self.closeButton)
+        self.layout.setAlignment(Qt.AlignTop)
+        self.layout.setContentsMargins(0,0,0,0)
+        self.setFixedHeight(30)
+        self.
+        #label setting:
+        #closeButton setting
+        #self setting
+        self.setLayout(self.layout)
