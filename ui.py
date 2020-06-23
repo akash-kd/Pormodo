@@ -15,7 +15,7 @@ from PyQt5 import QtGui
 
 Primaryfont = QtGui.QFont('Jetbrains Mono',12,QtGui.QFont.Bold)
 Secondaryfont = QtGui.QFont('Jetbrains Mono',10,QtGui.QFont.Medium)
-SliderFont = QtGui.QFont('Jetbrains Mono',90,QtGui.QFont.Bold)
+SliderFont = QtGui.QFont('Jetbrains Mono',90,QtGui.QFont.ExtraBold)
 Workmins = 25
 
 
@@ -48,7 +48,7 @@ class MainWindow(Widg):
 
 class TitleBar(Widg):
     def __init__(self,parent):
-        super(TitleBar,self).__init__()
+        super(TitleBar,self).__init__(parent)
         #component
         self.label = Label("PORMODO")
         self.closeButton = Pbutton()
@@ -100,15 +100,45 @@ class TitleBar(Widg):
 
 class Main(Widg):
     def __init__(self,parent):
-        super(Main,self).__init__()
-
+        super(Main,self).__init__(parent)
+        #components
+        self.Vlayout = VertArr()
+        self.SubMain = SubMain(self)
+        self.Play = Play(self)
+        self.Time = Time(self)
+        #vlayout setting
+        self.Vlayout.addWidget(self.SubMain)
+        self.Vlayout.addWidget(self.Play)
+        self.Vlayout.addWidget(self.Time)
+        self.Vlayout.setAlignment(Qt.AlignCenter)
+        #self setting
+        self.setLayout(self.Vlayout)
     
+    def setWorkMins(self,val):
+        self.workMins = val
+        # self.Time.setText(mins)
+    
+    def setBreakMins(self,val):
+        self.breakMins = val
+        # self.Time.setText(mins)
+
+    def getMins(self):
+        mins = []
+        mins.append(self.workMins)
+        mins.append(self.breakMins)
+        # self.Time.setText(mins)
+        return mins
+
+
+
 
 class SubMain(Widg):
+    testing = "something"
     def __init__(self,parent):
-        super(SubMain,self).__init__()
+        super(SubMain,self).__init__(parent)
         #component
         self.Hlayout = HoriArr()
+        self.label = Label("hello")
         #hlayout setting
         self.Hlayout.addWidget(WorkSlider(self))
         self.Hlayout.addWidget(BreakSlider(self))
@@ -116,13 +146,33 @@ class SubMain(Widg):
         self.Hlayout.setAlignment(Qt.AlignCenter)
         # self setting
         self.setLayout(self.Hlayout)
+
+    def setWorkMins(self,val):
+        self.workMins = val
+        self.parent().setWorkMins(self.workMins)
+    
+    def setBreakMins(self,val):
+        self.breakMins = val
+        self.parent().setBreakMins(self.breakMins)
+
+    def getMins(self):
+        mins = []
+        mins.append(self.workMins)
+        mins.append(self.breakMins)
+        return mins
+    
+    def doSomething(self):
+        print("invoked")
+    
+
+        
         
 
 
 class WorkSlider(Widg):
     mins = 25
     def __init__(self,parent):
-        super(WorkSlider,self).__init__()
+        super(WorkSlider,self).__init__(parent)
         #components
         self.layout = VertArr()
         self.slider = Slider()
@@ -147,10 +197,10 @@ class WorkSlider(Widg):
         #self setting
         self.setLayout(self.layout)
     def sliderValuedChanged(self):
-        print(self.slider.value())
         Workmins = self.slider.value()
         self.label.setText(str(self.slider.value()))
-        print(Workmins)
+        self.parent().setWorkMins(self.slider.value())
+        
 
 
 
@@ -158,7 +208,7 @@ class WorkSlider(Widg):
 class BreakSlider(Widg):
     mins = 5
     def __init__(self,parent):
-        super(BreakSlider,self).__init__()
+        super(BreakSlider,self).__init__(parent)
         #components
         self.layout = VertArr()
         self.slider = Slider()
@@ -190,8 +240,8 @@ class BreakSlider(Widg):
         #self variable 
 
     def sliderValuedChanged(self):
-        print(self.slider.value())
         self.label.setText(str(self.slider.value()))
+        self.parent().setBreakMins(self.slider.value())
 
 
     
@@ -199,32 +249,78 @@ class BreakSlider(Widg):
 
 class Play(Widg):
     def __init__(self,parent):
-        super(Play,self).__init__()
+        super(Play,self).__init__(parent)
         #component
         self.layout = HoriArr()
-        self.label = Label('heh')
         self.playButton = Pbutton('Start')
         self.pauseButton = Pbutton('Pause')
+        self.endButton = Pbutton('End')
         self.WorkMins = 25
         self.BreakMins = 25
 
         #layout setting
-        self.layout.addWidget(self.label)
         self.layout.addWidget(self.playButton)
         self.layout.addWidget(self.pauseButton)
+        self.layout.addWidget(self.endButton)   
         
         #playbutton Setting
         self.playButton.setFont(Secondaryfont)
-        self.playButton.clicked.connect(self.SetText)
+        self.playButton.clicked.connect(self.play)
 
         #pauseButton setting
         self.pauseButton.setFont(Secondaryfont)
+        self.playButton.clicked.connect(self.pause)
+
+        #end Button setting
+        self.endButton.setFont(Secondaryfont)
+        self.playButton.clicked.connect(self.end)
 
         #self setting
         self.setLayout(self.layout)
 
-    def SetText(self):
-        self.label.setText(str(Workmins))
+    def play(self):
+        self.parent()
+
+    def pause(self):
+        Time(self).pause()
+
+    def end(self):
+        Time(self).end()
+
+
+
+class Time(Widg):
+    def __init__(self,parent):
+        super(Time,self).__init__(parent)
+        #component
+        self.layout = VertArr()
+        self.label = Label("hellp")
+
+        #layout setting
+        self.layout.addWidget(self.label)
+        self.layout.setContentsMargins(0,0,0,0)
+
+        #label setting
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setFont(SliderFont)
+
+        #self setting
+        self.setLayout(self.layout)
+
+    def play(self):
+        self.label.setText("play")
+        print("play")
+    def pause(self):
+        self.label.setText("pause")
+        print("pause")
+    def end(self):
+        self.label.setText("end")
+        print("end")
+
+
+
+
+
 
 
 

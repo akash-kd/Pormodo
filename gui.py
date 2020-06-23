@@ -16,48 +16,22 @@ Primaryfont = QtGui.QFont('Jetbrains Mono',12,QtGui.QFont.Bold)
 Secondaryfont = QtGui.QFont('Jetbrains Mono',10,QtGui.QFont.Medium)
 SliderFont = QtGui.QFont('Jetbrains Mono',90,QtGui.QFont.Bold)
 
+from titlebar import TitleBar
+
 class MainWindow(Widg):
     def __init__(self):
         super(MainWindow,self).__init__()
-        #component
-        self.layout = VertArr()
-        #title Bar component
-        self.TitleBarlabel = Label("PORMODO")
-        self.TitleBarlayout = HoriArr()
-        self.TitleBarcloseButton = Pbutton()
-        #TitleBar layout settinh
-        self.TitleBarlayout.addWidget(self.TitleBarlabel)
-        self.TitleBarlayout.addWidget(self.TitleBarcloseButton)
-        self.TitleBarlayout.setContentsMargins(0,0,0,0)
-        self.TitleBarlayout.setAlignment(Qt.AlignTop)
-        #Title Bar label setting
-        self.TitleBarlabel.setStyleSheet("""background-color:#6DF2A7;""")
-        self.TitleBarlabel.setFixedHeight(30)
-        self.TitleBarlabel.setFixedWidth(400)
-        self.TitleBarlabel.setFont(Primaryfont)
-        self.TitleBarlabel.setAlignment(Qt.AlignCenter)
-        #Title bar close button setting
-        self.TitleBarcloseButton.setStyleSheet("""
-                                    background-image:url(close.png);
-                                    height:30px;
-                                    width:30px;
-                                    border:none;
-                                    """)
-        self.TitleBarcloseButton.clicked.connect(self.closeButtonClicked)
-        self.TitleBarcloseButton.installEventFilter(self)
-
-
-        #layout setting
-        self.layout.addLayout(self.TitleBarlayout)
-        self.layout.setContentsMargins(0,0,0,0)
-
-
+        #components:
+        self.mainLayout = VertArr()
+        #mainLayout setting
+        self.mainLayout.addWidget(TitleBar(self))
+        self.setContentsMargins(0,0,0,0)
         #self setting
-        self.setLayout(self.layout)
-        self.setMaximumHeight(400)
-        self.setMaximumWidth(400)
+        self.setLayout(self.mainLayout)
         self.setMinimumHeight(400)
         self.setMinimumWidth(400)
+        self.setMaximumHeight(400)
+        self.setMaximumWidth(400)
         self.setWindowFlag(Qt.FramelessWindowHint)
 
         #Main components
@@ -86,30 +60,6 @@ class MainWindow(Widg):
         self.WorkSliderlabel.setFont(SliderFont)
         self.WorkSliderlabel.setAlignment(Qt.AlignCenter)
     
-        
-
-
-
-    def eventFilter(self,obj,event):
-        if obj == self.TitleBarcloseButton and event.type() == QtCore.QEvent.HoverEnter:
-            self.TitleBarcloseButton.setStyleSheet("""
-                                        background-image:url(closeHovered.png);
-                                        height:30px;
-                                        width:30px;
-                                        border:none;
-                                        """)
-        if obj == self.TitleBarcloseButton and event.type() == QtCore.QEvent.HoverLeave:
-                    self.TitleBarcloseButton.setStyleSheet("""
-                                    background-image:url(close.png);
-                                    height:30px;
-                                    width:30px;
-                                    border:none;
-                                    """)
-        return super(MainWindow, self).eventFilter(obj, event)
-
-
-    def closeButtonClicked(self):
-        app.exit()
 
 
 
