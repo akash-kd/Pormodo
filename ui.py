@@ -101,6 +101,17 @@ class TitleBar(Widg):
                                     """)
         return super(TitleBar, self).eventFilter(obj, event)
 
+    def mousePressEvent(self, e):
+        self.startPos = e.globalPos()
+        self.clickPos = self.mapToParent(e.pos())
+        #self.clickPos = e.pos()
+
+    def mouseMoveEvent(self, e):
+        self.parentWidget().move(e.globalPos() - self.clickPos)
+
+
+
+
 
 class Main(Widg):
     def __init__(self,parent):
