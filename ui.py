@@ -178,6 +178,10 @@ class WorkSlider(Widg):
         self.slider = Slider()
         self.label = Label('25')
 
+        #label Setting
+        self.label.setFont(SliderFont)
+        self.label.setAlignment(Qt.AlignCenter)
+
         
         #slider setting
         self.slider.setRange(0,60)
@@ -269,25 +273,29 @@ class Play(Widg):
 
         #pauseButton setting
         self.pauseButton.setFont(Secondaryfont)
-        self.playButton.clicked.connect(self.pause)
+        self.pauseButton.clicked.connect(self.pause)
 
         #end Button setting
         self.endButton.setFont(Secondaryfont)
-        self.playButton.clicked.connect(self.end)
+        self.endButton.clicked.connect(self.end)
 
         #self setting
         self.setLayout(self.layout)
 
     def play(self):
-        self.parent()
+        w,m = self.parent().getMins()
+        self.parent().Time.play()
+        print(w,m)
 
     def pause(self):
-        Time(self).pause()
+        w,m = self.parent().getMins()
+        self.parent().Time.pause()
+        print(w,m)
 
     def end(self):
-        Time(self).end()
-
-
+        w,m = self.parent().getMins()
+        self.parent().Time.end()
+        print(w,m)
 
 class Time(Widg):
     def __init__(self,parent):
