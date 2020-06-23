@@ -82,7 +82,7 @@ class TitleBar(Widg):
         self.setLayout(self.layout)
 
     def closeButtonClicked(self):
-        app.exit()
+        self.parent().close()
     
     def eventFilter(self,obj,event):
         if obj == self.closeButton and event.type() == QtCore.QEvent.HoverEnter:
@@ -166,7 +166,8 @@ class SubMain(Widg):
         return mins
     
     def doSomething(self):
-        print("invoked")
+        # print("invoked")
+        pass
     
 
         
@@ -320,45 +321,65 @@ class Time(Widg):
         self.setLayout(self.layout)
         self.count = 0
         self.w,self.b = self.parent().getMins()
+        self.pauseClicked = False
+        self.endClicked = False
+        self.breaked = False
 
     def play(self):
         w,b = self.parent().getMins()
         self.w = w
         self.b = b
         self.current = "work"
-        print(w,b,self.w,self.b)
+        # print(w,b,self.w,self.b)
         w = w - 1
         self.count = 0
         for k in range(0,9):
-            print(self.current)
+            # print(self.current)
             for mins in range(w,-1,-1):
                 for i in range(59,-1,-1):
                     self.label.setText("{0}:{1}".format(mins,i))
                     QtTest.QTest.qWait(1000)
-                    print('mind',mins,"i=",i)
+                    self.currentMins = mins
+                    self.currentSecs = i
+                    if self.pauseClicked == True:
+                        self.pauseClicked = False
+                        self.breaked = True
+                        break
+                    elif self.endClicked == True:
+                        self.endClicked = False
+                        self.breaked = True
+                        break
+                    # print('mind',mins,"i=",i)
+                if self.breaked == True:
+                    break
+            if self.breaked == True:
+                self.breaked = False
+                break
 
             self.changed = False
             if self.current == 'work' and self.changed == False:
-                print('mins changed to break')
+                # print('mins changed to break')
                 self.current = 'break'
                 self.changed = True
                 w = self.b - 1
                 breakSound.play()
                 
             if self.current == 'break' and self.changed == False:
-                print('mins changed to work')
+                # print('mins changed to work')
                 self.current = 'work'
                 w = self.w - 1 
                 workSound.play()
                 
 
-        print('breaked')
+        # print('breaked')
 
     def pause(self):
-        self.label.setText("pause")
+        self.label.setText("{0}:{1}".format(self.currentMins,self.currentSecs))
+        self.pauseClicked = True
         print("pause")
     def end(self):
-        self.label.setText("end")
+        self.label.setText("{0}:{1}".format(str(0),str(0)))
+        self.endClicked = True
         print("end")
 
 
@@ -376,7 +397,7 @@ class Time(Widg):
 
 
 
-app = App([])
+app = App(sys.argv)
 mw = MainWindow()
 mw.show()
 sys.exit(app.exec_())
