@@ -12,10 +12,14 @@ from PyQt5.QtWidgets import QSlider as Slider
 from PyQt5.QtWidgets import QDial as Dial
 
 from PyQt5 import QtGui
+from PyQt5 import QtTest
+from PyQt5.QtMultimedia import QSound as Sound
 
 Primaryfont = QtGui.QFont('Jetbrains Mono',12,QtGui.QFont.Bold)
 Secondaryfont = QtGui.QFont('Jetbrains Mono',10,QtGui.QFont.Medium)
 SliderFont = QtGui.QFont('Jetbrains Mono',90,QtGui.QFont.ExtraBold)
+workSound = Sound('workSound.wav')
+breakSound = Sound('breakSound.wav')
 Workmins = 25
 
 
@@ -283,19 +287,19 @@ class Play(Widg):
         self.setLayout(self.layout)
 
     def play(self):
-        w,m = self.parent().getMins()
+        w,b = self.parent().getMins()
         self.parent().Time.play()
-        print(w,m)
+        # print(w,m)
 
     def pause(self):
-        w,m = self.parent().getMins()
+        w,mb= self.parent().getMins()
         self.parent().Time.pause()
-        print(w,m)
+        # print(w,m)
 
     def end(self):
-        w,m = self.parent().getMins()
+        w,b = self.parent().getMins()
         self.parent().Time.end()
-        print(w,m)
+        # print(w,m)
 
 class Time(Widg):
     def __init__(self,parent):
@@ -314,10 +318,42 @@ class Time(Widg):
 
         #self setting
         self.setLayout(self.layout)
+        self.count = 0
+        self.w,self.b = self.parent().getMins()
 
     def play(self):
-        self.label.setText("play")
-        print("play")
+        w,b = self.parent().getMins()
+        self.w = w
+        self.b = b
+        self.current = "work"
+        print(w,b,self.w,self.b)
+        w = w - 1
+        self.count = 0
+        for k in range(0,9):
+            print(self.current)
+            for mins in range(w,-1,-1):
+                for i in range(59,-1,-1):
+                    self.label.setText("{0}:{1}".format(mins,i))
+                    QtTest.QTest.qWait(1000)
+                    print('mind',mins,"i=",i)
+
+            self.changed = False
+            if self.current == 'work' and self.changed == False:
+                print('mins changed to break')
+                self.current = 'break'
+                self.changed = True
+                w = self.b - 1
+                breakSound.play()
+                
+            if self.current == 'break' and self.changed == False:
+                print('mins changed to work')
+                self.current = 'work'
+                w = self.w - 1 
+                workSound.play()
+                
+
+        print('breaked')
+
     def pause(self):
         self.label.setText("pause")
         print("pause")
