@@ -44,6 +44,8 @@ class MainWindow(Widg):
         self.setMinimumHeight(400)
         self.setMinimumWidth(400)
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        
 
 
 
@@ -410,5 +412,6 @@ class Time(Widg):
 
 app = App(sys.argv)
 mw = MainWindow()
+mw.setWindowIcon(QtGui.QIcon('icon.png'))
 mw.show()
 sys.exit(app.exec_())
