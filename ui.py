@@ -22,7 +22,7 @@ workSound = Sound('workSound.wav')
 breakSound = Sound('breakSound.wav')
 Workmins = 25
 
-
+#TODO fix the pause button 
 
 class MainWindow(Widg):
     def __init__(self):
